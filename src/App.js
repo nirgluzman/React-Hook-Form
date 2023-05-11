@@ -1,7 +1,17 @@
 import './App.css';
 
 function App() {
-  return <div className='App'>Hello World</div>;
+  return (
+    <form>
+      <p>
+        <input placeholder='username' type='text' />
+      </p>
+      <p>
+        <input placeholder='password' type='password' />
+      </p>
+      <input type='submit' />
+    </form>
+  );
 }
 
 export default App;
