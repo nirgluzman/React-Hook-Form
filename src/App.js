@@ -1,4 +1,5 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import { TextField } from '@mui/material';
 
 import './App.css';
 
@@ -8,8 +9,10 @@ function App() {
     formState: { errors },
     watch,
     handleSubmit,
+    control,
   } = useForm({
     defaultValues: {
+      nickname: 'bobo',
       username: 'Bob',
       password: '123',
     },
@@ -21,6 +24,13 @@ function App() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        control={control}
+        name='nickname'
+        rules={{ required: 'This field is required' }}
+        render={({ field }) => <TextField {...field} />}
+      />
+      <p>{errors.nickname?.message}</p>
       <p>
         <input
           {...register('username', { required: 'This field is required' })}
@@ -28,7 +38,7 @@ function App() {
           type='text'
         />
       </p>
-      {errors.username?.message}
+      <p>{errors.username?.message}</p>
       <p>
         <input
           {...register('password')}
