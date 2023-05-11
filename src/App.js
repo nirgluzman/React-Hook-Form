@@ -1,7 +1,24 @@
 import { useForm, Controller } from 'react-hook-form';
+
 import { TextField } from '@mui/material';
 
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import './App.css';
+
+const schema = yup
+  .object({
+    nickname: yup.string().required(),
+    username: yup.string().required(),
+    password: yup
+      .string()
+      .min(8, 'Password must be 8 characters long')
+      .matches(/[a-z]/, 'Password must include a lowercase letter')
+      .matches(/[A-Z]/, 'Password must include a upercase letter')
+      .matches(/[^\w]/, 'Password must include a symbol'),
+  })
+  .required();
 
 function App() {
   const {
@@ -11,11 +28,7 @@ function App() {
     handleSubmit,
     control,
   } = useForm({
-    defaultValues: {
-      nickname: 'bobo',
-      username: 'Bob',
-      password: '123',
-    },
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => {
@@ -41,11 +54,12 @@ function App() {
       <p>{errors.username?.message}</p>
       <p>
         <input
-          {...register('password')}
+          {...register('password', { required: 'This field is required' })}
           placeholder='password'
           type='password'
         />
       </p>
+      <p>{errors.password?.message}</p>
       <p>{watch('username')}</p>
       <input type='submit' />
     </form>
